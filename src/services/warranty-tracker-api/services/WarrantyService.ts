@@ -1,29 +1,39 @@
+import { AppError, HttpCode } from "../errors/AppError";
 import { IUser } from "../models/IUser";
 import { IWarranty } from "../models/IWarranty";
-import { UserRepository, userRepository } from "../repositories/UserRepository";
+import { UserRepository } from "../repositories/UserRepository";
 import { WarrantyRepository, warrantyRepository } from "../repositories/WarrantyRepository";
 
 export class WarrantyService {
-    private readonly userRepository: UserRepository;
     private readonly warrantyRepository: WarrantyRepository;
+    private readonly userRepository: UserRepository;
 
     constructor(
-        userRepository: UserRepository,
-        warrantyRepository: WarrantyRepository
+        warrantyRepository: WarrantyRepository,
+        userRepository: UserRepository
     ) {
-        this.userRepository = userRepository;
         this.warrantyRepository = warrantyRepository;
     }
 
-    public async addWarranty(userId: string, warranty: IWarranty) {
-        warranty.user = userId;
-
-        await this.warrantyRepository.addWarranty(userId, warranty);
+    public async getAll() {
+        return await this.warrantyRepository.getAll();
     }
 
-    public async removeWarranty(userId: string, warrantyId: string) {
-        await this.warrantyRepository.removeWarranty(userId, warrantyId);
+    public async add(userId: string, warranty: IWarranty) {
+        const user: IUser | null = await this.userRepository.get(userId);
+
+        if (user == null){
+            throw new AppError("User not found", HttpCode.NOT_FOUND, `The user with id ${userId}`)
+        }
+
+        warranty.user = userId;
+
+        warranty = await this.warrantyRepository.add(userId, warranty);
+    }
+
+    public async remove(userId: string, warrantyId: string) {
+        await this.warrantyRepository.remove(userId, warrantyId);
     }
 }
 
-export const warrantyService = new WarrantyService(userRepository, warrantyRepository);
+export const warrantyService = new WarrantyService(warrantyRepository);
