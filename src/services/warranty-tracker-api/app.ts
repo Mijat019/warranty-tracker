@@ -1,10 +1,12 @@
-import express, { Express } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
 import userRoutes from "./routes/userRoutes";
 import warrantyRoutes from "./routes/warrantyRoutes";
 import mongoose from "mongoose";
+import { errorController } from "./controllers/ErrorController";
+import morgan from "morgan";
 
 dotenv.config();
 
@@ -17,12 +19,15 @@ mongoose
         console.log(`[Server] Failed to connect to mongodb due to ${error}`)
     );
 
+app.use(morgan("tiny"))
 app.use(cors());
 app.use(bodyParser.json());
 
 app.use("/api/users", userRoutes);
 app.use("/api/warranties", warrantyRoutes);
 
+app.use(express.static("public"))
 
+app.use(errorController.handleError)
 
 export default app;

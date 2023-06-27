@@ -6,6 +6,7 @@ export interface IWarranty extends Document {
     startDate: Date;
     endDate: Date;
     user: string;
+    imageNames: string[];
 }
 
 const WarrantySchema = new Schema({
@@ -13,6 +14,7 @@ const WarrantySchema = new Schema({
     labels: { type: [String] },
     startDate: { type: Date },
     endDate: { type: Date },
+    imageNames: { type: [String] },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 

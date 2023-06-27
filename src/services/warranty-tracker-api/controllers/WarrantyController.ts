@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { WarrantyService, warrantyService } from "../services/WarrantyService";
+import { imageUploadService } from "../services/ImageUploadService";
+import { IWarranty } from "../models/IWarranty";
 
 export class WarrantyController {
     private readonly warrantyService: WarrantyService;
@@ -8,39 +10,50 @@ export class WarrantyController {
         this.warrantyService = warrantyService;
     }
 
-    public async createWarranty(
+    public getAll = async (
         request: Request,
         response: Response
-    ): Promise<void> {
-        try {
-            const { userId, warranty } = request.body;
+    ): Promise<void> => {
+        const warranties = await this.warrantyService.getAll();
 
-            await this.warrantyService.addWarranty(userId, warranty);
-
-            response.json({ status: 201, success: true });
-        } catch (err) {
-            response.json({ status: 500, success: false, err });
-        }
+        response.json({ status: 200, success: true, warranties });
     }
 
-    public async removeWarranty(request: Request, response: Response) {
-        try {
-            const { userId } = request.body;
-            const { warrantyId } = request.params;
 
-            if (!warrantyId) {
-                return response.json({ status: 400, success: false });
-            }
+    public createWarranty = async (
+        request: Request,
+        response: Response
+    ): Promise<void> => {
+        let { userId, warranty } = request.body;
 
-            await this.warrantyService.removeWarranty(
-                userId,
-                warrantyId as string
-            );
+        warranty = await this.warrantyService.add(userId, warranty);
 
-            response.json({ status: 200, success: true });
-        } catch (err) {
-            response.json({ status: 500, success: false, err });
+        response.json({ status: 201, success: true, warranty });
+    }
+
+    public removeWarranty = async (request: Request, response: Response): Promise<void> => {
+        const { userId } = request.body;
+        const { warrantyId } = request.params;
+
+        if (!warrantyId) {
+            response.json({ status: 400, success: false });
+            return;
         }
+
+        await this.warrantyService.remove(
+            userId,
+            warrantyId as string
+        );
+
+        response.json({ status: 200, success: true });
+    }
+
+    public uploadImage = async (request: Request, response: Response): Promise<void> => {
+        const { warrantyId } = request.params;
+
+        await imageUploadService.saveImages(request.files, warrantyId);
+
+        response.json({ status: 200, isSuccess: true })
     }
 }
 

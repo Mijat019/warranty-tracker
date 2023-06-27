@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { UserService, userService } from "../services/UserService";
+import { IUser } from "../models/IUser";
 
 export class UserController {
     private readonly userService: UserService;
@@ -8,13 +9,14 @@ export class UserController {
         this.userService = userService;
     }
 
-    public async registerUser(request: Request, response: Response): Promise<void> { 
-        try {
-            await this.userService.registerUser(request.body)
-            response.json({ status: 201, success: true })
-        } catch {
-            response.json({ status: 500, success: true })
-        }   
+    public getAllUsers = async (request: Request, response: Response) => {
+        const users: IUser[] = await this.userService.getAll()
+        response.json({ status: 200, success: true, users })
+    }
+
+    public registerUser = async (request: Request, response: Response) => {
+        await this.userService.register(request.body)
+        response.json({ status: 201, success: true })
     }
 }
 

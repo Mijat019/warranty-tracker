@@ -9,7 +9,13 @@ export class UserService {
         this.userRepository = userRepository;
     }
 
-    public async registerUser(user: IUser): Promise<void> {
+    public getAll = async (): Promise<IUser[]> => {
+        const users = await this.userRepository.getAll();
+
+        return users;
+    }
+
+    public async register(user: IUser): Promise<void> {
         const { password, salt } = await this.hashPassword(user.password);
         user.password = password;
         user.salt = salt;
