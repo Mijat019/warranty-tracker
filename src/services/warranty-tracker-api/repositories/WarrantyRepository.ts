@@ -1,29 +1,26 @@
-import { IUser } from "../models/IUser";
-import Warranty, { IWarranty } from "../models/IWarranty";
+import { IUser, User } from "../models/IUser";
+import { Warranty, IWarranty } from "../models/IWarranty";
 
 export class WarrantyRepository {
-    public async addWarranty(user: IUser, warranty: IWarranty): Promise<void> {
+    public async addWarranty(userId: string, warranty: IWarranty): Promise<void> {
         const newWarranty = await Warranty.create(warranty);
 
-        user.warrantyIds.push(newWarranty._id);
-        await user.save();
+        await User.updateOne(
+            { _id: userId },
+            { $push: { warrantyIds: newWarranty.id } }
+        );
     }
 
     public async removeWarranty(
-        user: IUser,
+        userId: string,
         warrantyId: string
     ): Promise<void> {
-        const warrantyIndex = user.warrantyIds.findIndex(
-            (warranty) => warranty.toString() === warrantyId
+        await Warranty.findByIdAndDelete(warrantyId);
+
+        await User.updateOne(
+            { _id: userId },
+            { $pull: { warrantyIds: warrantyId } }
         );
-
-        if (warrantyIndex === -1) {
-            throw new Error("Warranty not found");
-        }
-
-        user.warrantyIds.splice(warrantyIndex, 1);
-
-        await user.save();
     }
 }
 

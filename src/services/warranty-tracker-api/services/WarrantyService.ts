@@ -18,25 +18,11 @@ export class WarrantyService {
     public async addWarranty(userId: string, warranty: IWarranty) {
         warranty.user = userId;
 
-        const user: IUser | null = await this.userRepository.getUser(userId);
-
-        console.log(user);
-
-        if (user == null) {
-            throw new Error("Jebo mamu");
-        }
-
-        await this.warrantyRepository.addWarranty(user, warranty);
+        await this.warrantyRepository.addWarranty(userId, warranty);
     }
 
     public async removeWarranty(userId: string, warrantyId: string) {
-        const user: IUser | null = await this.userRepository.getUser(userId);
-
-        if (user == null) {
-            throw new Error("Jebo mamu");
-        }
-
-        await this.warrantyRepository.removeWarranty(user, warrantyId);
+        await this.warrantyRepository.removeWarranty(userId, warrantyId);
     }
 }
 

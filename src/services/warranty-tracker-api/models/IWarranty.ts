@@ -16,4 +16,4 @@ const WarrantySchema = new Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 
-export default mongoose.model<IWarranty>("Warranty", WarrantySchema);
+export const Warranty = mongoose.model<IWarranty>("Warranty", WarrantySchema);

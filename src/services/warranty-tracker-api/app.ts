@@ -19,7 +19,10 @@ mongoose
 
 app.use(cors());
 app.use(bodyParser.json());
+
 app.use("/api/users", userRoutes);
 app.use("/api/warranties", warrantyRoutes);
+
+
 
 export default app;

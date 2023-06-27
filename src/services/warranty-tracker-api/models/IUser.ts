@@ -23,4 +23,4 @@ const UserSchema = new Schema({
     warrantyIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "Warranty" }],
 });
 
-export default mongoose.model<IUser>("User", UserSchema);
+export const User = mongoose.model<IUser>("User", UserSchema);
