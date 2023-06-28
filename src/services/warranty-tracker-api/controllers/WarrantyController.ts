@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { WarrantyService, warrantyService } from "../services/WarrantyService";
 import { imageUploadService } from "../services/ImageUploadService";
-import { IWarranty } from "../models/IWarranty";
 
 export class WarrantyController {
     private readonly warrantyService: WarrantyService;
@@ -19,7 +18,6 @@ export class WarrantyController {
         response.json({ status: 200, success: true, warranties });
     }
 
-
     public createWarranty = async (
         request: Request,
         response: Response
@@ -34,11 +32,6 @@ export class WarrantyController {
     public removeWarranty = async (request: Request, response: Response): Promise<void> => {
         const { userId } = request.body;
         const { warrantyId } = request.params;
-
-        if (!warrantyId) {
-            response.json({ status: 400, success: false });
-            return;
-        }
 
         await this.warrantyService.remove(
             userId,

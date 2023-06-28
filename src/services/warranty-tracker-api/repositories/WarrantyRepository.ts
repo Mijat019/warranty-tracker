@@ -2,6 +2,10 @@ import { User } from "../models/IUser";
 import { Warranty, IWarranty } from "../models/IWarranty";
 
 export class WarrantyRepository {
+    public getById = async (id: string): Promise<IWarranty | null>=> {
+        return await Warranty.findById(id);
+    }
+
     public async getAll(): Promise<IWarranty[]> {
         return await Warranty.find({});
     }
