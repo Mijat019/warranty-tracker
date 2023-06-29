@@ -16,7 +16,7 @@ export class WarrantyService {
         return await this.warrantyRepository.getAll();
     }
 
-    public async add(userId: string, warranty: IWarranty) {
+    public async add(userId: string, warranty: IWarranty): Promise<IWarranty> {
         const user: IUser | null = await this.userRepository.getById(userId);
 
         if (user == null) {
@@ -30,6 +30,8 @@ export class WarrantyService {
         warranty.user = userId;
 
         warranty = await this.warrantyRepository.add(userId, warranty);
+
+        return warranty;
     }
 
     public async remove(userId: string, warrantyId: string) {

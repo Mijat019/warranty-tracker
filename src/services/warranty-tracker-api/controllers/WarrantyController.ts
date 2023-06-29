@@ -4,31 +4,48 @@ import {
     ImageUploadService,
     imageUploadService,
 } from "../services/ImageUploadService";
+import { WarrantyResponse } from "../responses/WarrantyResponse";
 
 export class WarrantyController {
     constructor(
         private readonly warrantyService: WarrantyService,
         private readonly imageUploadService: ImageUploadService
-    ) {}
+    ) { }
 
     public getAll = async (
-        request: Request,
-        response: Response
+        req: Request,
+        res: Response
     ): Promise<void> => {
         const warranties = await this.warrantyService.getAll();
 
-        response.json({ status: 200, success: true, warranties });
+        const warrantiesResponse: WarrantyResponse[] = warranties.map((warranty: WarrantyResponse) => ({
+            productName: warranty.productName,
+            labels: warranty.labels,
+            startDate: warranty.startDate,
+            endDate: warranty.endDate,
+            user: warranty.user,
+            imageNames: warranty.imageNames,
+        }));
+
+        res.json({ status: 200, isSuccess: true, warranties: warrantiesResponse });
     };
 
     public createWarranty = async (
-        request: Request,
-        response: Response
+        req: Request,
+        res: Response
     ): Promise<void> => {
-        let { userId, warranty } = request.body;
+        const warranty = await this.warrantyService.add(req.user.id, req.body);
 
-        warranty = await this.warrantyService.add(userId, warranty);
+        const warrantyResponse: WarrantyResponse = {
+            productName: warranty.productName,
+            labels: warranty.labels,
+            startDate: warranty.startDate,
+            endDate: warranty.endDate,
+            user: warranty.user,
+            imageNames: warranty.imageNames,
+        }
 
-        response.json({ status: 201, success: true, warranty });
+        res.json({ status: 201, isSuccess: true, warranty: warrantyResponse });
     };
 
     public removeWarranty = async (
@@ -40,7 +57,7 @@ export class WarrantyController {
 
         await this.warrantyService.remove(userId, warrantyId as string);
 
-        response.json({ status: 200, success: true });
+        response.json({ status: 200, isSuccess: true });
     };
 
     public uploadImage = async (
