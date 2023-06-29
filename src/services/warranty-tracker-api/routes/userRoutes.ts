@@ -1,16 +1,33 @@
 import { Router } from "express";
-import { userController } from "../controllers/UserController";
-import { errorController } from "../controllers/ErrorController";
-import { registerSchema } from "../schemas/userSchema";
+import { UserController, userController } from "../controllers/UserController";
+import {
+    ErrorController,
+    errorController,
+} from "../controllers/ErrorController";
+import { loginSchema, registerSchema } from "../schemas/userSchema";
 import { asyncHandler } from "../middleware/asyncHandler";
+import { authorize } from "../middleware/authorization";
+import { validateRequest } from "./validation";
 
 const router = Router();
 
-router.get("", asyncHandler(userController.getAllUsers));
+// public endpoints
+
+router.post(
+    "/login",
+    validateRequest(loginSchema),
+    asyncHandler(userController.login)
+);
 router.post(
     "",
-    errorController.validateRequest(registerSchema),
+    validateRequest(registerSchema),
     asyncHandler(userController.registerUser)
 );
+
+// protected endpoints
+
+router.use(authorize);
+
+router.get("", asyncHandler(userController.getAllUsers));
 
 export default router;
