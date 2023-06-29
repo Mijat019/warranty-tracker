@@ -6,8 +6,8 @@ export class WarrantyRepository {
         return await Warranty.findById(id);
     };
 
-    public getAll = async (): Promise<IWarranty[]> => {
-        return await Warranty.find({});
+    public getAll = async (filter = {}): Promise<IWarranty[]> => {
+        return await Warranty.find(filter);
     };
 
     public add = async (

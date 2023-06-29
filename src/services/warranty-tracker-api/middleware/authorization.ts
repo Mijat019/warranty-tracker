@@ -36,7 +36,7 @@ export function authorize(
     next: NextFunction
 ) {
     if (!request.user || !request.token) {
-        throw new AppError("Token missing.", HttpCode.UNAUTHORIZED, "");
+        throw new AppError("Token missing.", HttpCode.UNAUTHENTICATED, "");
     }
 
     try {
@@ -47,6 +47,6 @@ export function authorize(
 
         next();
     } catch (error) {
-        throw new AppError("Unauthenticated.", HttpCode.UNAUTHORIZED, "");
+        throw new AppError("Unauthenticated", HttpCode.UNAUTHENTICATED, "");
     }
 }

@@ -4,6 +4,7 @@ import { loginSchema, registerSchema } from "../schemas/userSchema";
 import { asyncHandler } from "../middleware/asyncHandler";
 import { authorize } from "../middleware/authorization";
 import { validateRequest } from "../middleware/validation";
+import { warrantyController } from "../controllers/WarrantyController";
 
 const router = Router();
 
@@ -15,7 +16,7 @@ router.post(
     asyncHandler(userController.login)
 );
 router.post(
-    "",
+    "/",
     validateRequest(registerSchema),
     asyncHandler(userController.registerUser)
 );
@@ -24,6 +25,6 @@ router.post(
 
 router.use(authorize);
 
-router.get("", asyncHandler(userController.getAllUsers));
+router.get("/", asyncHandler(userController.getAllUsers));
 
 export default router;
