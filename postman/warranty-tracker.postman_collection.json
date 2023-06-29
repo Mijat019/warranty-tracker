@@ -37,7 +37,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"mijatno1+1@gmail.com\",\r\n    \"password\": \"Test1234\"\r\n}",
+							"raw": "{\r\n    \"email\": \"mijatno1@gmail.com\",\r\n    \"password\": \"Test1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -80,7 +80,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"mijatno1+1@gmail.com\",\r\n    \"password\": \"Test1234\"\r\n}",
+							"raw": "{\r\n    \"email\": \"mijatno1@gmail.com\",\r\n    \"password\": \"Test1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -204,6 +204,38 @@
 								"api",
 								"warranties",
 								"649c2bab1dade5af6dfb9485"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "labels",
+			"item": [
+				{
+					"name": "labels",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"labels\": [\r\n        \"Telefon\",\r\n        \"Patike\",\r\n        \"Graficka\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/labels",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"labels"
 							]
 						}
 					},
