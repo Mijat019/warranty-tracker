@@ -1,6 +1,6 @@
 import {
     FileSystemService,
-    fileSystemService,
+    storageService,
 } from "../infrastructure/FileSystemService";
 import * as uuid from "uuid";
 import { IWarranty, Warranty } from "../models/IWarranty";
@@ -13,16 +13,10 @@ import {
 export class ImageUploadService {
     private readonly allowedExtensions = ["png", "jpeg", "jpg"];
 
-    private readonly fileSystemService: FileSystemService;
-    private readonly warrantyRepository: WarrantyRepository;
-
     constructor(
-        warrantyRepository: WarrantyRepository,
-        fileSystemService: FileSystemService
-    ) {
-        this.warrantyRepository = warrantyRepository;
-        this.fileSystemService = fileSystemService;
-    }
+        private warrantyRepository: WarrantyRepository,
+        private storageService: FileSystemService
+    ) {}
 
     public saveImages = async (
         files: any,
@@ -56,10 +50,7 @@ export class ImageUploadService {
             const fileNameAndExtension = `${uuid.v4()}.${fileExtension}`;
 
             try {
-                await this.fileSystemService.saveImage(
-                    file,
-                    fileNameAndExtension
-                );
+                await this.storageService.saveImage(file, fileNameAndExtension);
                 successfulUploads.push(fileNameAndExtension);
             } catch (err) {
                 failedFiles.push(fileNameAndExtension);
@@ -76,12 +67,12 @@ export class ImageUploadService {
     };
 
     public removeImages = async (imageNames: string[]): Promise<void> => {
-        const promises = imageNames.map(this.fileSystemService.deleteImage);
+        const promises = imageNames.map(this.storageService.deleteImage);
         await Promise.all(promises);
     };
 }
 
 export const imageUploadService = new ImageUploadService(
     warrantyRepository,
-    fileSystemService
+    storageService
 );

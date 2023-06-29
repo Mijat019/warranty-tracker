@@ -1,11 +1,13 @@
 import { Router } from "express";
-import { warrantyController } from "../controllers/WarrantyController";
 import multer from "multer";
 import { asyncHandler } from "../middleware/asyncHandler";
+import { authorize } from "../middleware/authorization";
+import { warrantyController } from "../controllers/WarrantyController";
 
 const router = Router();
-
 const upload = multer();
+
+router.use(authorize);
 
 router.get("", asyncHandler(warrantyController.getAll));
 router.post("", asyncHandler(warrantyController.createWarranty));

@@ -2,33 +2,22 @@ import { AppError, HttpCode } from "../errors/AppError";
 import { IUser } from "../models/IUser";
 import { IWarranty } from "../models/IWarranty";
 import { UserRepository, userRepository } from "../repositories/UserRepository";
-import {
-    WarrantyRepository,
-    warrantyRepository,
-} from "../repositories/WarrantyRepository";
+import { WarrantyRepository, warrantyRepository } from "../repositories/WarrantyRepository";
 import { ImageUploadService, imageUploadService } from "./ImageUploadService";
 
 export class WarrantyService {
-    private readonly warrantyRepository: WarrantyRepository;
-    private readonly userRepository: UserRepository;
-    private readonly imageUploadService: ImageUploadService;
-
     constructor(
-        warrantyRepository: WarrantyRepository,
-        userRepository: UserRepository,
-        imageUploadService: ImageUploadService
-    ) {
-        this.warrantyRepository = warrantyRepository;
-        this.userRepository = userRepository;    
-        this.imageUploadService = imageUploadService;
-    }
+        private readonly warrantyRepository: WarrantyRepository,
+        private readonly userRepository: UserRepository,
+        private readonly imageUploadService: ImageUploadService
+    ) {}
 
     public async getAll() {
         return await this.warrantyRepository.getAll();
     }
 
     public async add(userId: string, warranty: IWarranty) {
-        const user: IUser | null = await this.userRepository.get(userId);
+        const user: IUser | null = await this.userRepository.getById(userId);
 
         if (user == null) {
             throw new AppError(
@@ -60,8 +49,4 @@ export class WarrantyService {
     }
 }
 
-export const warrantyService = new WarrantyService(
-    warrantyRepository,
-    userRepository,
-    imageUploadService,
-);
+export const warrantyService = new WarrantyService(warrantyRepository, userRepository, imageUploadService);

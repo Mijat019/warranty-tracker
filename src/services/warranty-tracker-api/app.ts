@@ -4,8 +4,8 @@ import cors from "cors";
 import userRoutes from "./routes/userRoutes";
 import warrantyRoutes from "./routes/warrantyRoutes";
 import mongoose from "mongoose";
-import { errorController } from "./controllers/ErrorController";
 import morgan from "morgan";
+import { parseToken } from "./middleware/authorization";
 
 dotenv.config();
 
@@ -22,11 +22,11 @@ app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
 
+app.use(parseToken);
+
 app.use("/api/users", userRoutes);
 app.use("/api/warranties", warrantyRoutes);
 
 app.use(express.static("public"));
-
-app.use(errorController.handleError);
 
 export default app;

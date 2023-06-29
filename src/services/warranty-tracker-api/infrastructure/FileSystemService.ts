@@ -20,4 +20,4 @@ export class FileSystemService {
     };
 }
 
-export const fileSystemService = new FileSystemService();
+export const storageService = new FileSystemService();
