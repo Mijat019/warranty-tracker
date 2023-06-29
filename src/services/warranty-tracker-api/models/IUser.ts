@@ -4,6 +4,7 @@ export interface IUser extends Document {
     email: string;
     password: string;
     salt: string;
+    labels: string[];
     warrantyIds: string[];
 }
 
@@ -20,6 +21,9 @@ const UserSchema = new Schema({
     salt: {
         type: String,
         required: true,
+    },
+    labels: {
+        type: [String]
     },
     warrantyIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "Warranty" }],
 });

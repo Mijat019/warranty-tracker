@@ -1,13 +1,9 @@
 import { Router } from "express";
-import { UserController, userController } from "../controllers/UserController";
-import {
-    ErrorController,
-    errorController,
-} from "../controllers/ErrorController";
+import { userController } from "../controllers/UserController";
 import { loginSchema, registerSchema } from "../schemas/userSchema";
 import { asyncHandler } from "../middleware/asyncHandler";
 import { authorize } from "../middleware/authorization";
-import { validateRequest } from "./validation";
+import { validateRequest } from "../middleware/validation";
 
 const router = Router();
 

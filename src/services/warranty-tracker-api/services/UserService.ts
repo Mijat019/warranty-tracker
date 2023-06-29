@@ -7,7 +7,7 @@ import { config } from "../config";
 import { v4 } from "uuid";
 
 export class UserService {
-    constructor(private userRepository: UserRepository) {}
+    constructor(private userRepository: UserRepository) { }
 
     public getAll = async (): Promise<IUser[]> => {
         const users = await this.userRepository.getAll();
@@ -34,6 +34,16 @@ export class UserService {
 
         await this.userRepository.createUser(user);
     };
+
+    private async hashPassword(
+        password: string
+    ): Promise<{ password: string; salt: string }> {
+        const saltRounds = 10;
+        const salt = await bcrypt.genSalt(saltRounds);
+        password = await bcrypt.hash(password, salt);
+
+        return { password, salt };
+    }
 
     public login = async (email: string, password: string): Promise<string> => {
         const user: IUser | null = await this.userRepository.getByEmail(email);
@@ -69,14 +79,13 @@ export class UserService {
         return token;
     };
 
-    private async hashPassword(
-        password: string
-    ): Promise<{ password: string; salt: string }> {
-        const saltRounds = 10;
-        const salt = await bcrypt.genSalt(saltRounds);
-        password = await bcrypt.hash(password, salt);
 
-        return { password, salt };
+    public checkIfUserExists = async (userId: string): Promise<void> => {
+        const user: IUser | null = await this.userRepository.getById(userId);
+
+        if (!user) {
+            throw new AppError("User doesn't exist.", HttpCode.NOT_FOUND, "");
+        }
     }
 }
 
