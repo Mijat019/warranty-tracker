@@ -8,13 +8,14 @@ import morgan from "morgan";
 import { parseToken } from "./middleware/authorization";
 import labelRoutes from "./routes/labelRoutes";
 import { errorController } from "./controllers/ErrorController";
+import { config } from "./config";
 
 dotenv.config();
 
 const app: Express = express();
 
 mongoose
-    .connect("mongodb://127.0.0.1:27017/warranty-tracker")
+    .connect(config.dbConnectionString)
     .then(() => console.log("[Server] Connected to mongodb"))
     .catch((error) =>
         console.log(`[Server] Failed to connect to mongodb due to ${error}`)
