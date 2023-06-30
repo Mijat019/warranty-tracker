@@ -1,5 +1,5 @@
 import { UserRepository, userRepository } from "../repositories/UserRepository";
-import { UserService, userService } from "../services/UserService";
+import { UserService, userService } from "./UserService";
 
 export class LabelsService {
     constructor(private readonly userRepository: UserRepository, private readonly userService: UserService) { }

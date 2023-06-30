@@ -4,7 +4,6 @@ import { loginSchema, registerSchema } from "../schemas/userSchema";
 import { asyncHandler } from "../middleware/asyncHandler";
 import { authorize } from "../middleware/authorization";
 import { validateRequest } from "../middleware/validation";
-import { warrantyController } from "../controllers/WarrantyController";
 
 const router = Router();
 

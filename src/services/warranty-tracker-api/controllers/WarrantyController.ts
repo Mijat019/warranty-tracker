@@ -5,7 +5,6 @@ import {
     imageUploadService,
 } from "../services/ImageUploadService";
 import { WarrantyResponse } from "../responses/WarrantyResponse";
-import { AppError, HttpCode } from "../errors/AppError";
 
 export class WarrantyController {
     constructor(

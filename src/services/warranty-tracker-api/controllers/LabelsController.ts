@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { LabelsService, labelsService } from "../errors/LabelsService";
+import { LabelsService, labelsService } from "../services/LabelsService";
 
 export class LabelsController {
     constructor(private readonly labelsService: LabelsService) { }
