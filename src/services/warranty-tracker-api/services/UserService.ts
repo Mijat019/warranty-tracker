@@ -1,13 +1,13 @@
 import bcrypt from "bcrypt";
 import { IUser } from "../models/IUser";
 import { UserRepository, userRepository } from "../repositories/UserRepository";
-import { AppError, HttpCode } from "../errors/AppError";
 import jwt from "jsonwebtoken";
 import { config } from "../config";
 import { v4 } from "uuid";
+import { createCredentialsIncorrectError, createEmailIsTakenError, createUserNotFoundError } from "../errors/errors";
 
 export class UserService {
-    constructor(private userRepository: UserRepository) { }
+    constructor(private userRepository: UserRepository) {}
 
     public getAll = async (): Promise<IUser[]> => {
         const users = await this.userRepository.getAll();
@@ -21,11 +21,7 @@ export class UserService {
         );
 
         if (existingUser) {
-            throw new AppError(
-                "The email is taken.",
-                HttpCode.BAD_REQUEST,
-                `The email ${user.email} is already taken`
-            );
+            throw createEmailIsTakenError(user.email);
         }
 
         const { password, salt } = await this.hashPassword(user.password);
@@ -49,11 +45,7 @@ export class UserService {
         const user: IUser | null = await this.userRepository.getByEmail(email);
 
         if (user === null) {
-            throw new AppError(
-                "Credentials incorrect",
-                HttpCode.BAD_REQUEST,
-                ""
-            );
+            throw createCredentialsIncorrectError();
         }
 
         const doCredentialsMatch = await bcrypt.compare(
@@ -62,31 +54,26 @@ export class UserService {
         );
 
         if (!doCredentialsMatch) {
-            throw new AppError(
-                "Credentials incorrect",
-                HttpCode.BAD_REQUEST,
-                ""
-            );
+            throw createCredentialsIncorrectError();
         }
 
-        const token: string = jwt.sign({ email, id: user.id }, config.secret, {
-            issuer: "http://localhost:3000",
+        const token: string = jwt.sign({ email, id: user.id }, config.jwt.secret, {
+            issuer: config.jwt.tokenIssuer,
+            audience: config.jwt.tokenAudience,
             expiresIn: "1h",
-            audience: "http://localhost:3000",
             jwtid: v4(),
         });
 
         return token;
     };
 
-
     public checkIfUserExists = async (userId: string): Promise<void> => {
         const user: IUser | null = await this.userRepository.getById(userId);
 
         if (!user) {
-            throw new AppError("User doesn't exist.", HttpCode.NOT_FOUND, "");
+            throw createUserNotFoundError();
         }
-    }
+    };
 }
 
 export const userService = new UserService(userRepository);

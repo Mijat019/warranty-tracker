@@ -4,11 +4,14 @@ import {
 } from "../infrastructure/FileSystemService";
 import * as uuid from "uuid";
 import { IWarranty, Warranty } from "../models/IWarranty";
-import { AppError, HttpCode } from "../errors/AppError";
 import {
     WarrantyRepository,
     warrantyRepository,
 } from "../repositories/WarrantyRepository";
+import {
+    createFileExtensionNotSupportedError,
+    createWarrantyNotFoundError,
+} from "../errors/errors";
 
 export class ImageUploadService {
     private readonly allowedExtensions = ["png", "jpeg", "jpg"];
@@ -26,11 +29,7 @@ export class ImageUploadService {
             await this.warrantyRepository.getById(warrantyId);
 
         if (!warranty) {
-            throw new AppError(
-                "Warranty doesn't exist.",
-                HttpCode.NOT_FOUND,
-                ""
-            );
+            throw createWarrantyNotFoundError();
         }
 
         const successfulUploads: string[] = [];
@@ -40,11 +39,7 @@ export class ImageUploadService {
             const fileExtension: string = file.mimetype.split("/")[1];
 
             if (this.allowedExtensions.indexOf(fileExtension) === -1) {
-                throw new AppError(
-                    "Unsupported file extension.",
-                    HttpCode.BAD_REQUEST,
-                    `Extension ${fileExtension} is not supported.`
-                );
+                throw createFileExtensionNotSupportedError(fileExtension);
             }
 
             const fileNameAndExtension = `${uuid.v4()}.${fileExtension}`;

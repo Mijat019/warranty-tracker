@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { AppError, HttpCode } from "../errors/AppError";
 import { config } from "../config";
+import { createTokenInvalidError, createTokenMissingError } from "../errors/errors";
 
 declare global {
     namespace Express {
@@ -36,7 +36,7 @@ export function authorize(
     next: NextFunction
 ) {
     if (!request.user || !request.token) {
-        throw new AppError("Token missing.", HttpCode.UNAUTHENTICATED, "");
+        throw createTokenMissingError();
     }
 
     try {
@@ -47,6 +47,6 @@ export function authorize(
 
         next();
     } catch (error) {
-        throw new AppError("Unauthenticated", HttpCode.UNAUTHENTICATED, "");
+        throw createTokenInvalidError();
     }
 }
