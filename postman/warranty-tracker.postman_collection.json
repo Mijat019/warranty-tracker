@@ -7,10 +7,10 @@
 	},
 	"item": [
 		{
-			"name": "users",
+			"name": "Users",
 			"item": [
 				{
-					"name": "users",
+					"name": "getAll",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -26,18 +26,40 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "UserWarranties",
+			"item": [
+				{
+					"name": "getAllForUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/649d85dafd4a1f285caf08b9/warranties",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"649d85dafd4a1f285caf08b9",
+								"warranties"
+							]
+						}
+					},
+					"response": []
 				},
 				{
-					"name": "users",
+					"name": "create",
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"mijatno1@gmail.com\",\r\n    \"password\": \"Test1234\"\r\n}",
+							"raw": "{\r\n    \"productName\": \"Samsung S22\",\r\n    \"labels\": [\r\n        \"Telefon\"\r\n    ],\r\n    \"startDate\": \"2023-06-24T12:34:56.789Z\",\r\n    \"endDate\": \"2023-06-25T12:34:56.789Z\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -45,20 +67,146 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/users",
+							"raw": "{{baseUrl}}/api/users/649d85dafd4a1f285caf08b9/warranties",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
-								"users"
+								"users",
+								"649d85dafd4a1f285caf08b9",
+								"warranties"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "users/login",
+					"name": "uploadImage",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photos",
+									"type": "file",
+									"src": "/C:/Users/mijat/OneDrive/Pictures/Screenshots/Screenshot 2023-03-13 173752.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/649d9f1fd6389def81d7b436/warranties/649c2bab1dade5af6dfb9485/photos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"649d9f1fd6389def81d7b436",
+								"warranties",
+								"649c2bab1dade5af6dfb9485",
+								"photos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"649bfec0e4608f1c376b86c0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/649d9f1fd6389def81d7b436/warranties/649c2bab1dade5af6dfb9485",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"649d9f1fd6389def81d7b436",
+								"warranties",
+								"649c2bab1dade5af6dfb9485"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Labels",
+			"item": [
+				{
+					"name": "labels",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"labels\": [\r\n        \"Telefon\",\r\n        \"Patike\",\r\n        \"Graficka\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/649d9f1fd6389def81d7b436/labels",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"649d9f1fd6389def81d7b436",
+								"labels"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Warranties",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/warranties",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"warranties"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
 					"event": [
 						{
 							"listen": "test",
@@ -88,50 +236,30 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/users/login",
+							"raw": "{{baseUrl}}/api/auth/login",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
-								"users",
+								"auth",
 								"login"
 							]
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "warranty",
-			"item": [
-				{
-					"name": "warranties",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/warranties",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"warranties"
-							]
-						}
-					},
-					"response": []
 				},
 				{
-					"name": "warranty",
+					"name": "register",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": \"649bfec0e4608f1c376b86c0\",\r\n    \"warranty\": {\r\n        \"productName\": \"Samsung S22\",\r\n        \"labels\": [\r\n            \"Gigatron\"\r\n        ],\r\n        \"startDate\": \"2023-06-24T12:34:56.789Z\",\r\n        \"endDate\": \"2023-06-25T12:34:56.789Z\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"email\": \"mijatno1@gmail.com\",\r\n    \"password\": \"Test1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -139,103 +267,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/warranties",
+							"raw": "{{baseUrl}}/api/users",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
-								"warranties"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": ":warrantyId/photos",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "photos",
-									"type": "file",
-									"src": "/C:/Users/mijat/OneDrive/Pictures/Screenshots/Screenshot 2023-03-13 173752.png"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/warranties/649c2bab1dade5af6dfb9485/photos",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"warranties",
-								"649c2bab1dade5af6dfb9485",
-								"photos"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "warranty",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"userId\": \"649bfec0e4608f1c376b86c0\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/warranties/649c2bab1dade5af6dfb9485",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"warranties",
-								"649c2bab1dade5af6dfb9485"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "labels",
-			"item": [
-				{
-					"name": "labels",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"labels\": [\r\n        \"Telefon\",\r\n        \"Patike\",\r\n        \"Graficka\"\r\n    ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/labels",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"labels"
+								"users"
 							]
 						}
 					},

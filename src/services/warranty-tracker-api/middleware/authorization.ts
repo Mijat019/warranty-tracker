@@ -40,7 +40,7 @@ export function authorize(
     }
 
     try {
-        jwt.verify(request.token, config.secret, {
+        jwt.verify(request.token, config.jwt.secret, {
             audience: "http://localhost:3000",
             issuer: "http://localhost:3000",
         });

@@ -3,7 +3,6 @@ import mongoose, { Document, Schema } from "mongoose";
 export interface IUser extends Document {
     email: string;
     password: string;
-    salt: string;
     labels: string[];
     warrantyIds: string[];
 }
@@ -18,12 +17,8 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
-    salt: {
-        type: String,
-        required: true,
-    },
     labels: {
-        type: [String]
+        type: [String],
     },
     warrantyIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "Warranty" }],
 });

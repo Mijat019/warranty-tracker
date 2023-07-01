@@ -4,7 +4,11 @@ import { UserRepository, userRepository } from "../repositories/UserRepository";
 import jwt from "jsonwebtoken";
 import { config } from "../config";
 import { v4 } from "uuid";
-import { createCredentialsIncorrectError, createEmailIsTakenError, createUserNotFoundError } from "../errors/errors";
+import {
+    createCredentialsIncorrectError,
+    createEmailIsTakenError,
+    createUserNotFoundError,
+} from "../errors/errors";
 
 export class UserService {
     constructor(private userRepository: UserRepository) {}
@@ -24,21 +28,18 @@ export class UserService {
             throw createEmailIsTakenError(user.email);
         }
 
-        const { password, salt } = await this.hashPassword(user.password);
+        const password = await this.hashPassword(user.password);
         user.password = password;
-        user.salt = salt;
 
         await this.userRepository.addUser(user);
     };
 
-    private async hashPassword(
-        password: string
-    ): Promise<{ password: string; salt: string }> {
+    private async hashPassword(password: string): Promise<string> {
         const saltRounds = 10;
         const salt = await bcrypt.genSalt(saltRounds);
         password = await bcrypt.hash(password, salt);
 
-        return { password, salt };
+        return password;
     }
 
     public login = async (email: string, password: string): Promise<string> => {
@@ -57,12 +58,16 @@ export class UserService {
             throw createCredentialsIncorrectError();
         }
 
-        const token: string = jwt.sign({ email, id: user.id }, config.jwt.secret, {
-            issuer: config.jwt.tokenIssuer,
-            audience: config.jwt.tokenAudience,
-            expiresIn: "1h",
-            jwtid: v4(),
-        });
+        const token: string = jwt.sign(
+            { email, id: user.id },
+            config.jwt.secret,
+            {
+                issuer: config.jwt.tokenIssuer,
+                audience: config.jwt.tokenAudience,
+                expiresIn: "1h",
+                jwtid: v4(),
+            }
+        );
 
         return token;
     };
