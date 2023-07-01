@@ -9,7 +9,7 @@ import morgan from "morgan";
 import { parseToken } from "./middleware/authorization";
 import labelRoutes from "./routes/labelRoutes";
 import { errorController } from "./controllers/ErrorController";
-import { config } from "./config";
+import { config } from "./config/config";
 import userWarrantyRoutes from "./routes/userWarrantyRoutes";
 
 dotenv.config();

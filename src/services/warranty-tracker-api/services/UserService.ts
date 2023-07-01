@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { IUser } from "../models/IUser";
 import { UserRepository, userRepository } from "../repositories/UserRepository";
 import jwt from "jsonwebtoken";
-import { config } from "../config";
+import { config } from "../config/config";
 import { v4 } from "uuid";
 import {
     createCredentialsIncorrectError,
