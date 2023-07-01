@@ -32,7 +32,7 @@ export class UserService {
         user.password = password;
         user.salt = salt;
 
-        await this.userRepository.createUser(user);
+        await this.userRepository.addUser(user);
     };
 
     private async hashPassword(

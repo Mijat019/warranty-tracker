@@ -1,7 +1,7 @@
 import { User, IUser } from "../models/IUser";
 
 export class UserRepository {
-    public createUser = async (user: IUser): Promise<void> => {
+    public addUser = async (user: IUser): Promise<void> => {
         await User.create(user);
     };
     public getByEmail = async (email: string): Promise<IUser | null> => {
