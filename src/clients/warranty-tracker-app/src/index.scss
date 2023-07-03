@@ -1,0 +1,34 @@
+$font: "Roboto Mono", "Vazirmatn";
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: $font;
+}
+
+input {
+    outline: none;
+}
+
+.form-group {
+    padding: 5px;
+
+    label {
+        margin-right: 5px;
+    }
+}
+
+button {
+    background-color: transparent;
+    padding: 5px;
+}
+
+#login-page {
+    height: 100vh;
+
+    div {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
